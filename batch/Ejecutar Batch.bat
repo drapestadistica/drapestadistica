@@ -1,0 +1,93 @@
+@echo off
+title Menu Principal - Execute Process
+::Variable de conexion a base de datos
+Set Cnn=(local)
+
+::partición del disco duro, donde se ubica
+Set disco=D:\
+
+::Para ponerlo de color 
+::Si queremos ver los colores disponibles abrimos cmd y escribimos: color ?
+color 4
+
+::Podemos redimensionar podemos usar
+::mode ancho,alto ej: 
+mode 120,30
+::el numero representa cuantas lineas de texto ocupa
+::Si no podemos dejarlo por predeterminado
+
+:home
+
+echo ---------------------------------------------
+echo --              Atajos                     --
+echo ---------------------------------------------
+echo --                                         --
+echo --       1. Crear Database HIS MINSA       --
+echo --                                         --
+echo --       2. Crear Database PROMSA          --
+echo --                                         --
+echo --       3. Poblar base de datos           --
+echo --                                     	--
+echo --       4. Abrir canal de Twitch          --
+echo --                                         --
+echo --       5. Salir                          --
+echo --                                         --
+echo ---------------------------------------------
+echo.
+echo Selecciona el numero de atajo opcion.
+
+set /p menu=
+
+if "%menu%"=="1" goto opcion1
+
+if "%menu%"=="2" goto opcion2
+
+if "%menu%"=="3" goto opcion3
+
+if "%menu%"=="4" goto opcion4
+
+if "%menu%"=="5" goto opcion4
+
+cls
+echo Opcion no valida, Presione cualquier tecla e intente nuevamente.
+pause>nul
+cls
+goto home
+
+::Script que crea la base de datos del MINSA - OJO Descargando del nivel Nacional
+:opcion1
+::cls es equivalente a un limpiar.
+cls
+ sqlcmd -S %Cnn% -E -i "%disco%Query_SedeRed\SQLQueryDatabase_HisMinsa.sql" -t 0
+::pause solo muestra el mensaje de presionar una tecla
+pause
+cls
+goto home
+
+:opcion2
+::cls es equivalente a un limpiar.
+cls
+ sqlcmd -S %Cnn% -E -i "%disco%Query_SedeRed\Script\Create_Database.sql" -t 0
+::pause solo muestra el mensaje de presionar una tecla
+pause
+cls
+goto home
+
+::Se Inserta datos en la Database PROMSA
+:opcion3
+cls
+ sqlcmd -S %Cnn% -E -i "%disco%Query_SedeRed\Script\Insercion_datos.sql" -t 0
+::pause solo muestra el mensaje de presionar una tecla
+pause
+cls
+goto home
+
+::TWITCH
+:opcion4
+cls
+ sqlcmd -S %Cnn% -E -i "%disco%Query_SedeRed\Script\Insercion_datos.sql" -t 0
+cls
+goto home
+
+:opcion5
+cls&exit
